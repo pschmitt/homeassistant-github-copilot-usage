@@ -11,7 +11,7 @@ from aiogithubapi.const import OAUTH_USER_LOGIN
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
-from homeassistant.const import CONF_NAME, CONF_SCAN_INTERVAL, CONF_TOKEN
+from homeassistant.const import CONF_SCAN_INTERVAL, CONF_TOKEN
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.selector import (
@@ -50,9 +50,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     )
     payload = await client.async_validate()
     login = payload.get("login")
-    title = data.get(CONF_NAME) or (
-        f"GitHub Copilot ({login})" if isinstance(login, str) and login else "GitHub Copilot"
-    )
+    title = f"GitHub Copilot ({login})" if isinstance(login, str) and login else "GitHub Copilot"
 
     return {
         "title": title,
@@ -102,7 +100,7 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
                 info = await validate_input(
                     self.hass,
                     {
-                        CONF_TOKEN: user_input[CONF_TOKEN],
+                        CONF_TOKEN: user_input[CONF_TOKEN].strip(),
                     },
                 )
             except GitHubCopilotUsageAuthenticationError:
@@ -119,19 +117,17 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
                 self._abort_if_unique_id_configured()
                 data = {
                     CONF_AUTH_METHOD: AUTH_METHOD_PAT,
-                    CONF_TOKEN: user_input[CONF_TOKEN],
+                    CONF_TOKEN: user_input[CONF_TOKEN].strip(),
                 }
                 options = {
                     CONF_SCAN_INTERVAL: DEFAULT_SCAN_INTERVAL,
                 }
-                title = user_input.get(CONF_NAME) or info["title"]
-                return self.async_create_entry(title=title, data=data, options=options)
+                return self.async_create_entry(title=info["title"], data=data, options=options)
 
         return self.async_show_form(
             step_id="personal_access_token",
             data_schema=vol.Schema(
                 {
-                    vol.Optional(CONF_NAME): TextSelector(),
                     vol.Required(CONF_TOKEN): TextSelector(
                         TextSelectorConfig(type=TextSelectorType.PASSWORD)
                     ),
@@ -172,7 +168,6 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
             step_id="device_flow",
             data_schema=vol.Schema(
                 {
-                    vol.Optional(CONF_NAME): TextSelector(),
                     vol.Required(CONF_CLIENT_ID): TextSelector(),
                 }
             ),
@@ -249,8 +244,7 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
         options = {
             CONF_SCAN_INTERVAL: DEFAULT_SCAN_INTERVAL,
         }
-        title = self._user_input.get(CONF_NAME) or info["title"]
-        return self.async_create_entry(title=title, data=data, options=options)
+        return self.async_create_entry(title=info["title"], data=data, options=options)
 
     async def async_step_could_not_register(
         self,

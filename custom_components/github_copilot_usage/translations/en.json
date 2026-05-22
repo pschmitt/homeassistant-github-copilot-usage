@@ -12,7 +12,6 @@
         "title": "Add GitHub Copilot Usage",
         "description": "Connect Home Assistant to GitHub Copilot quota data using a GitHub personal access token.",
         "data": {
-          "name": "Name",
           "token": "Personal access token"
         }
       },
@@ -20,7 +19,6 @@
         "title": "Add GitHub Copilot Usage",
         "description": "Use GitHub device flow with your own GitHub OAuth app client ID. Device flow for the Copilot endpoint is experimental.",
         "data": {
-          "name": "Name",
           "client_id": "GitHub OAuth app client ID"
         }
       }
