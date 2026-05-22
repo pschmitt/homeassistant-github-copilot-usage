@@ -1,0 +1,19 @@
+{
+  "domain": "github_copilot_usage",
+  "name": "GitHub Copilot Usage",
+  "codeowners": [
+    "@pschmitt"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/pschmitt/homeassistant-github-copilot-usage",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/pschmitt/homeassistant-github-copilot-usage/issues",
+  "loggers": [
+    "custom_components.github_copilot_usage"
+  ],
+  "requirements": [
+    "aiogithubapi==26.0.0"
+  ],
+  "version": "0.1.0"
+}

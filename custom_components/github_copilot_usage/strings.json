@@ -1,0 +1,32 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add GitHub Copilot Usage",
+        "description": "Connect Home Assistant to GitHub Copilot quota data.",
+        "data": {
+          "name": "Name",
+          "token": "Personal access token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to GitHub.",
+      "invalid_auth": "Invalid personal access token.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This GitHub account is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "GitHub Copilot Usage options",
+        "data": {
+          "scan_interval": "Update interval in seconds"
+        }
+      }
+    }
+  }
+}
