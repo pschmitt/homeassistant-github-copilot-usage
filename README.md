@@ -47,3 +47,4 @@ Useful attributes include:
 
 - The underlying endpoint is undocumented/internal and may change.
 - OAuth is intentionally not implemented; PAT auth is simpler and works with the endpoint today.
+- Repository branding assets use GitHub Copilot logos sourced from GitHub-owned public assets. GitHub, GitHub Copilot, and related marks are trademarks of GitHub, Inc. The integration code is GPL-3.0, but the bundled third-party logos are not relicensed under GPL.
