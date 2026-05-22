@@ -3,20 +3,44 @@
     "step": {
       "user": {
         "title": "Add GitHub Copilot Usage",
-        "description": "Connect Home Assistant to GitHub Copilot quota data.",
+        "menu_options": {
+          "personal_access_token": "Personal access token",
+          "device_flow": "Device flow (experimental)"
+        }
+      },
+      "personal_access_token": {
+        "title": "Add GitHub Copilot Usage",
+        "description": "Connect Home Assistant to GitHub Copilot quota data using a GitHub personal access token.",
         "data": {
           "name": "Name",
           "token": "Personal access token"
+        }
+      },
+      "device_flow": {
+        "title": "Add GitHub Copilot Usage",
+        "description": "Use GitHub device flow with your own GitHub OAuth app client ID. Device flow for the Copilot endpoint is experimental.",
+        "data": {
+          "name": "Name",
+          "client_id": "GitHub OAuth app client ID"
         }
       }
     },
     "error": {
       "cannot_connect": "Failed to connect to GitHub.",
       "invalid_auth": "Invalid personal access token.",
+      "could_not_register": "Failed to start GitHub device flow.",
       "unknown": "Unexpected error."
     },
     "abort": {
-      "already_configured": "This GitHub account is already configured."
+      "already_configured": "This GitHub account is already configured.",
+      "could_not_register": "Failed to start GitHub device flow.",
+      "oauth_not_supported": "GitHub device flow completed, but the Copilot endpoint did not accept the OAuth token.",
+      "cannot_connect": "Failed to connect to GitHub.",
+      "invalid_auth": "GitHub did not return a usable access token.",
+      "unknown": "Unexpected error."
+    },
+    "progress": {
+      "wait_for_device": "Open {url} and enter code {code}."
     }
   },
   "options": {

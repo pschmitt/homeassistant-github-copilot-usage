@@ -18,6 +18,18 @@ It polls `https://api.github.com/copilot_internal/user` with a GitHub personal a
 2. Add the integration in Home Assistant.
 3. Enter the token and, optionally, a display name.
 
+### Experimental device flow
+
+The integration also includes an experimental GitHub device-flow path.
+
+This requires:
+
+1. Your own GitHub OAuth app
+2. Device flow enabled for that app
+3. The OAuth app client ID
+
+Even with a successful device login, GitHub may still reject the resulting OAuth token for the undocumented `copilot_internal/user` endpoint. PAT authentication is the known-working path.
+
 ## Sensors
 
 Each returned quota bucket becomes a sensor whose state is the `remaining` value from GitHub.
