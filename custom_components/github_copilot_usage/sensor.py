@@ -173,11 +173,11 @@ class GitHubCopilotQuotaSensor(GitHubCopilotUsageEntity, SensorEntity):
         """Return the native unit for the current metric."""
         if self.entity_description.metric == "percent_used":
             return "%"
-        if self.entity_description.metric == "remaining":
+        if self.entity_description.metric in {"remaining", "entitlement"}:
             if self._quota_snapshot and self._quota_snapshot.get("unlimited") is True:
                 return None
             return "requests"
-        return "requests"
+        return None
 
     @property
     def native_value(self) -> str | int | float | None:
