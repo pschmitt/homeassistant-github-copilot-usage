@@ -12,6 +12,26 @@ It polls `https://api.github.com/copilot_internal/user` with a GitHub personal a
 - Diagnostic sensors for each Copilot quota bucket
 - HACS-compatible repository layout
 
+## Installation
+
+### HACS
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=pschmitt&repository=homeassistant-github-copilot-usage&category=integration)
+
+1. Click the badge above, or open HACS and add `https://github.com/pschmitt/homeassistant-github-copilot-usage` as a custom repository of type **Integration**.
+2. Install **GitHub Copilot Usage**.
+3. Restart Home Assistant.
+
+### Manual
+
+Copy `custom_components/github_copilot_usage` from this repository into:
+
+```text
+custom_components/github_copilot_usage
+```
+
+Restart Home Assistant.
+
 ## Setup
 
 1. Create a GitHub personal access token that can access your Copilot account data.
