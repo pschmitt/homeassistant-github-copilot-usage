@@ -7,7 +7,7 @@ from typing import Any
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL, CONF_TOKEN
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import GitHubCopilotUsageApiClient
 from .const import DEFAULT_SCAN_INTERVAL, DOMAIN, PLATFORMS
@@ -23,13 +23,14 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Set up GitHub Copilot Usage from a config entry."""
-    session = async_create_clientsession(hass)
+    session = async_get_clientsession(hass)
     client = GitHubCopilotUsageApiClient(
         session=session,
         token=config_entry.data[CONF_TOKEN],
     )
     coordinator = GitHubCopilotUsageCoordinator(
         hass=hass,
+        config_entry=config_entry,
         client=client,
         update_interval_seconds=config_entry.options.get(
             CONF_SCAN_INTERVAL,
@@ -51,7 +52,8 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Unload a GitHub Copilot Usage config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(config_entry, PLATFORMS)
-    hass.data[DOMAIN].pop(config_entry.entry_id)
+    if unload_ok:
+        hass.data[DOMAIN].pop(config_entry.entry_id)
     return unload_ok
 
 

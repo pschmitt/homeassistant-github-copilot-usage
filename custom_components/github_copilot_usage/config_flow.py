@@ -13,7 +13,7 @@ import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
 from homeassistant.const import CONF_SCAN_INTERVAL, CONF_TOKEN
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import (
     NumberSelector,
     NumberSelectorConfig,
@@ -43,7 +43,7 @@ _LOGGER = logging.getLogger(__name__)
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, str]:
     """Validate the config flow input."""
-    session = async_create_clientsession(hass)
+    session = async_get_clientsession(hass)
     client = GitHubCopilotUsageApiClient(
         session=session,
         token=data[CONF_TOKEN],
@@ -75,7 +75,8 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> GitHubCopilotUsageOptionsFlow:
         """Return the options flow."""
-        return GitHubCopilotUsageOptionsFlow(config_entry)
+        del config_entry
+        return GitHubCopilotUsageOptionsFlow()
 
     async def async_step_user(
         self,
@@ -145,7 +146,7 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             self._user_input = dict(user_input)
-            session = async_create_clientsession(self.hass)
+            session = async_get_clientsession(self.hass)
             self._device = GitHubDeviceAPI(
                 client_id=user_input[CONF_CLIENT_ID],
                 session=session,
@@ -258,10 +259,6 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
 class GitHubCopilotUsageOptionsFlow(OptionsFlow):
     """Handle options for GitHub Copilot Usage."""
 
-    def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialize the options flow."""
-        self._config_entry = config_entry
-
     async def async_step_init(
         self,
         user_input: dict[str, Any] | None = None,
@@ -276,7 +273,7 @@ class GitHubCopilotUsageOptionsFlow(OptionsFlow):
                 {
                     vol.Required(
                         CONF_SCAN_INTERVAL,
-                        default=self._config_entry.options.get(
+                        default=self.config_entry.options.get(
                             CONF_SCAN_INTERVAL,
                             DEFAULT_SCAN_INTERVAL,
                         ),

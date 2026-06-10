@@ -6,6 +6,7 @@ from datetime import timedelta
 import logging
 from typing import Any
 
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -26,6 +27,7 @@ class GitHubCopilotUsageCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def __init__(
         self,
         hass: HomeAssistant,
+        config_entry: ConfigEntry,
         client: GitHubCopilotUsageApiClient,
         update_interval_seconds: int,
     ) -> None:
@@ -33,6 +35,7 @@ class GitHubCopilotUsageCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         super().__init__(
             hass,
             logger=_LOGGER,
+            config_entry=config_entry,
             name=DOMAIN,
             update_interval=timedelta(seconds=update_interval_seconds),
         )

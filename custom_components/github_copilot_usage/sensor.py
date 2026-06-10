@@ -49,11 +49,9 @@ async def async_setup_entry(
 
     @callback
     def async_add_missing_entities() -> None:
-        current_unique_ids: set[str] = set()
         new_entities: list[SensorEntity] = []
 
         reset_unique_id = f"{config_entry.entry_id}_quota_reset"
-        current_unique_ids.add(reset_unique_id)
         if reset_unique_id not in known_entities:
             known_entities.add(reset_unique_id)
             new_entities.append(
@@ -68,7 +66,6 @@ async def async_setup_entry(
             for quota_key in snapshots:
                 for description in _build_descriptions(quota_key):
                     unique_id = f"{config_entry.entry_id}_{quota_key}_{description.metric}"
-                    current_unique_ids.add(unique_id)
                     if unique_id in known_entities:
                         continue
 
@@ -80,9 +77,6 @@ async def async_setup_entry(
                             unique_id=unique_id,
                         )
                     )
-
-        known_entities.clear()
-        known_entities.update(current_unique_ids)
 
         if new_entities:
             async_add_entities(new_entities)
