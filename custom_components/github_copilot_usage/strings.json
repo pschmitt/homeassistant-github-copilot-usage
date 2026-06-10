@@ -21,6 +21,13 @@
         "data": {
           "client_id": "GitHub OAuth app client ID"
         }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate GitHub Copilot",
+        "description": "The token for **{name}** was rejected. Enter a new GitHub personal access token with Copilot access.",
+        "data": {
+          "token": "Personal access token"
+        }
       }
     },
     "error": {
@@ -35,7 +42,8 @@
       "oauth_not_supported": "GitHub device flow completed, but the Copilot endpoint did not accept the OAuth token.",
       "cannot_connect": "Failed to connect to GitHub.",
       "invalid_auth": "GitHub did not return a usable access token.",
-      "unknown": "Unexpected error."
+      "unknown": "Unexpected error.",
+      "reauth_successful": "Re-authentication successful."
     },
     "progress": {
       "wait_for_device": "Open {url} and enter code {code}."
