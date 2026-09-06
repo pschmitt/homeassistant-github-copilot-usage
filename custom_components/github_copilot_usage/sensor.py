@@ -115,6 +115,13 @@ def _build_descriptions(
             name=f"{title} Used",
             icon="mdi:percent",
         ),
+        GitHubCopilotQuotaSensorDescription(
+            key=f"{quota_key}_usage_pace",
+            quota_key=quota_key,
+            metric="usage_pace",
+            name=f"{title} Usage Pace",
+            icon="mdi:speedometer",
+        ),
     )
 
 
@@ -165,7 +172,7 @@ class GitHubCopilotQuotaSensor(GitHubCopilotUsageEntity, SensorEntity):
     @property
     def native_unit_of_measurement(self) -> str | None:
         """Return the native unit for the current metric."""
-        if self.entity_description.metric == "percent_used":
+        if self.entity_description.metric in {"percent_used", "usage_pace"}:
             return "%"
         if self.entity_description.metric in {"remaining", "entitlement"}:
             if self._quota_snapshot and self._quota_snapshot.get("unlimited") is True:
@@ -195,6 +202,13 @@ class GitHubCopilotQuotaSensor(GitHubCopilotUsageEntity, SensorEntity):
             if not isinstance(percent_remaining, (int, float)):
                 return None
             return round(100 - float(percent_remaining), 1)
+
+        if self.entity_description.metric == "usage_pace":
+            percent_used = self._percent_used(snapshot)
+            percent_elapsed = self.coordinator.data.get("quota_period_percent_elapsed")
+            if percent_used is None or not isinstance(percent_elapsed, (int, float)):
+                return None
+            return round(percent_used - percent_elapsed, 1)
 
         return None
 
