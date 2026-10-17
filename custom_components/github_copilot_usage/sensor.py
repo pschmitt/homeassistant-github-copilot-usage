@@ -82,9 +82,7 @@ async def async_setup_entry(
             async_add_entities(new_entities)
 
     async_add_missing_entities()
-    config_entry.async_on_unload(
-        coordinator.async_add_listener(async_add_missing_entities)
-    )
+    config_entry.async_on_unload(coordinator.async_add_listener(async_add_missing_entities))
 
 
 def _build_descriptions(

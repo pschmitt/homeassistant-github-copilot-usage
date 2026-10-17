@@ -6,10 +6,9 @@ import asyncio
 import logging
 from typing import Any
 
+import voluptuous as vol
 from aiogithubapi import GitHubDeviceAPI, GitHubException
 from aiogithubapi.const import OAUTH_USER_LOGIN
-import voluptuous as vol
-
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
 from homeassistant.const import CONF_SCAN_INTERVAL, CONF_TOKEN
 from homeassistant.core import HomeAssistant, callback
@@ -180,9 +179,7 @@ class GitHubCopilotUsageConfigFlow(ConfigFlow, domain=DOMAIN):
         if self._device is None or self._device_login is None:
             return
 
-        response = await self._device.activation(
-            device_code=self._device_login.device_code
-        )
+        response = await self._device.activation(device_code=self._device_login.device_code)
         self._oauth_login = response.data
 
     async def async_step_device_flow_progress(

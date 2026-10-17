@@ -12,8 +12,6 @@
   "loggers": [
     "custom_components.github_copilot_usage"
   ],
-  "requirements": [
-    "aiogithubapi>=26.0.0"
-  ],
+  "requirements": [],
   "version": "0.1.0"
 }
