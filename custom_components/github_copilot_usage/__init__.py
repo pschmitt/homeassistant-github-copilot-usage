@@ -40,15 +40,19 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
             DEFAULT_SCAN_INTERVAL,
         ),
     )
-    await coordinator.async_config_entry_first_refresh()
 
     hass.data[DOMAIN][config_entry.entry_id] = {
         "client": client,
         "coordinator": coordinator,
     }
 
+    if coordinator.data is None:
+        coordinator.last_update_success = False
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
     config_entry.async_on_unload(config_entry.add_update_listener(async_update_listener))
+    config_entry.async_create_background_task(
+        hass, coordinator.async_refresh(), "github_copilot_usage_first_refresh"
+    )
     return True
 
 

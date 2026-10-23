@@ -61,7 +61,7 @@ async def async_setup_entry(
                 )
             )
 
-        snapshots = coordinator.data.get("quota_snapshots")
+        snapshots = (coordinator.data or {}).get("quota_snapshots")
         if isinstance(snapshots, dict):
             for quota_key in snapshots:
                 for description in _build_descriptions(quota_key):
@@ -142,7 +142,7 @@ class GitHubCopilotResetSensor(GitHubCopilotUsageEntity, SensorEntity):
     @property
     def native_value(self) -> datetime | None:
         """Return the global quota reset timestamp."""
-        value = self.coordinator.data.get("quota_reset_date_utc")
+        value = (self.coordinator.data or {}).get("quota_reset_date_utc")
         if not isinstance(value, str):
             return None
         return _parse_datetime(value)
@@ -203,7 +203,7 @@ class GitHubCopilotQuotaSensor(GitHubCopilotUsageEntity, SensorEntity):
 
         if self.entity_description.metric == "usage_pace":
             percent_used = self._percent_used(snapshot)
-            percent_elapsed = self.coordinator.data.get("quota_period_percent_elapsed")
+            percent_elapsed = (self.coordinator.data or {}).get("quota_period_percent_elapsed")
             if percent_used is None or not isinstance(percent_elapsed, (int, float)):
                 return None
             return round(percent_used - percent_elapsed, 1)
@@ -233,7 +233,7 @@ class GitHubCopilotQuotaSensor(GitHubCopilotUsageEntity, SensorEntity):
     @property
     def _quota_snapshot(self) -> dict[str, Any] | None:
         """Return the snapshot for this sensor."""
-        snapshots = self.coordinator.data.get("quota_snapshots")
+        snapshots = (self.coordinator.data or {}).get("quota_snapshots")
         if not isinstance(snapshots, dict):
             return None
 
