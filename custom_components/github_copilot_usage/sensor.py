@@ -49,6 +49,8 @@ async def async_setup_entry(
 
     @callback
     def async_add_missing_entities() -> None:
+        if coordinator.data is None:
+            return
         new_entities: list[SensorEntity] = []
 
         reset_unique_id = f"{config_entry.entry_id}_quota_reset"

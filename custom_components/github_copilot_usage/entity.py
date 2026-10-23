@@ -17,8 +17,12 @@ class GitHubCopilotUsageEntity(CoordinatorEntity[GitHubCopilotUsageCoordinator])
     @property
     def device_info(self) -> DeviceInfo:
         """Return device info for the integration device."""
-        payload = self.coordinator.data
-        login = payload.get("login", "github")
+        payload = self.coordinator.data or {}
+        login = (
+            payload.get("login")
+            or self.coordinator.config_entry.unique_id
+            or self.coordinator.config_entry.entry_id
+        )
         return DeviceInfo(
             identifiers={(DOMAIN, str(login))},
             name=f"GitHub Copilot ({login})",
