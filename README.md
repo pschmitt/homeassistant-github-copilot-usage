@@ -1,70 +1,45 @@
-# Home Assistant GitHub Copilot Usage
+<p align="center">
+  <img src="logo.png" width="128" alt="GitHub Copilot Usage logo">
+</p>
 
-Home Assistant custom integration that exposes GitHub Copilot quota usage as sensors.
+<p align="center">
+  <a href="https://my.home-assistant.io/redirect/marketplace_repository/?owner=pschmitt&amp;repository=homeassistant-github-copilot-usage&amp;category=integration"><img src="https://my.home-assistant.io/badges/marketplace_repository.svg" alt="Open this integration in Home Assistant Marketplace"></a>
+</p>
 
-It polls `https://api.github.com/copilot_internal/user` with a GitHub personal access token and creates one diagnostic sensor per quota bucket returned by GitHub, such as `premium_interactions`, `chat`, and `completions`.
+<h1 align="center">GitHub Copilot Usage</h1>
+
+<p align="center">Expose remaining GitHub Copilot quotas as Home Assistant sensors.</p>
 
 ## Features
 
-- Config flow based setup
-- PAT authentication
-- Polling coordinator with configurable scan interval
-- Diagnostic sensors for each Copilot quota bucket
-- HACS-compatible repository layout
+- **Quota sensors:** Create a diagnostic sensor for each reported bucket, including premium interactions, chat and completions.
+- **Usage details:** Report remaining percentage, entitlement, plan and quota reset date.
+- **Polling:** Adjust the coordinator's scan interval in the integration options.
+- **Authentication:** Use a personal access token; an experimental device-flow option requires your own GitHub OAuth app.
 
-## Installation
+## Install
 
-### Home Assistant Marketplace
+Use the Marketplace badge above on Home Assistant 2026.11 or later to add this
+repository as a custom integration. On older versions, add it as a HACS
+custom repository of type **Integration**. Install and restart Home Assistant.
+The badge does not imply a public catalog listing. For manual installation,
+copy `custom_components/github_copilot_usage` into Home Assistant's
+`custom_components/` directory and restart.
 
-[![Open this integration in Home Assistant Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=pschmitt&repository=homeassistant-github-copilot-usage&category=integration)
+## Quick start
 
-1. Click the badge above to add this repository. For older installations, add `https://github.com/pschmitt/homeassistant-github-copilot-usage` to HACS as a custom repository of type **Integration**.
-2. Install **GitHub Copilot Usage**.
-3. Restart Home Assistant.
+1. Create a GitHub personal access token that can access your Copilot account.
+2. Add **GitHub Copilot Usage** under **Settings → Devices & services → Add
+   integration**, select personal access token authentication, and enter the
+   token and an optional display name.
+3. Inspect the remaining-quota sensors for the buckets returned by GitHub.
 
-### Manual
+The integration polls GitHub's undocumented `copilot_internal/user` endpoint;
+that endpoint may change. The experimental device flow requires a GitHub OAuth
+app with device flow enabled, but its token may be rejected by this endpoint.
+Personal access token authentication is the known-working path.
 
-Copy `custom_components/github_copilot_usage` from this repository into:
+## License
 
-```text
-custom_components/github_copilot_usage
-```
-
-Restart Home Assistant.
-
-## Setup
-
-1. Create a GitHub personal access token that can access your Copilot account data.
-2. Add the integration in Home Assistant.
-3. Enter the token and, optionally, a display name.
-
-### Experimental device flow
-
-The integration also includes an experimental GitHub device-flow path.
-
-This requires:
-
-1. Your own GitHub OAuth app
-2. Device flow enabled for that app
-3. The OAuth app client ID
-
-Even with a successful device login, GitHub may still reject the resulting OAuth token for the undocumented `copilot_internal/user` endpoint. PAT authentication is the known-working path.
-
-## Sensors
-
-Each returned quota bucket becomes a sensor whose state is the `remaining` value from GitHub.
-
-Useful attributes include:
-
-- `percent_remaining`
-- `unlimited`
-- `entitlement`
-- `quota_remaining`
-- `quota_reset_date`
-- `copilot_plan`
-
-## Notes
-
-- The underlying endpoint is undocumented/internal and may change.
-- OAuth is intentionally not implemented; PAT auth is simpler and works with the endpoint today.
-- Repository branding assets use GitHub Copilot logos sourced from GitHub-owned public assets. GitHub, GitHub Copilot, and related marks are trademarks of GitHub, Inc. The integration code is GPL-3.0, but the bundled third-party logos are not relicensed under GPL.
+[GPL-3.0](LICENSE). GitHub Copilot logos are GitHub-owned trademarks and are
+not relicensed under this repository's license.
