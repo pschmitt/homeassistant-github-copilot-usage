@@ -14,11 +14,11 @@ It polls `https://api.github.com/copilot_internal/user` with a GitHub personal a
 
 ## Installation
 
-### HACS
+### Home Assistant Marketplace
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=pschmitt&repository=homeassistant-github-copilot-usage&category=integration)
+[![Open this integration in Home Assistant Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=pschmitt&repository=homeassistant-github-copilot-usage&category=integration)
 
-1. Click the badge above, or open HACS and add `https://github.com/pschmitt/homeassistant-github-copilot-usage` as a custom repository of type **Integration**.
+1. Click the badge above to add this repository. For older installations, add `https://github.com/pschmitt/homeassistant-github-copilot-usage` to HACS as a custom repository of type **Integration**.
 2. Install **GitHub Copilot Usage**.
 3. Restart Home Assistant.
 
